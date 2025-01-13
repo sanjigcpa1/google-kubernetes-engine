@@ -11,21 +11,26 @@ description: Learn to create Google Kubernetes Engine GKE Cluster
 
 ## Step-02: Create Standard GKE Cluster 
 - Go to Kubernetes Engine -> Clusters -> CREATE
-- Select **GKE Standard -> CONFIGURE**
+- Select **Switch to standard cluster at the top right coner ->
 - **Cluster Basics**
   - **Name:** standard-public-cluster-1
   - **Location type:** Regional
   - **Region:** us-central1
   - **Specify default node locations:** us-central1-a, us-central1-b, us-central1-c
   - **Release Channel**
-    - **Release Channel:** Rapid Channel
+    - **Release Channel:** (Are used to test changes in cluster versions per release)
+        No channel:select(not recommended) because k8s is going to automatically pick the latest release and upgrade to over time
+        Rapid Channel:Use it to quickly test new releases before upgrading to production
+        Regular:Used in testing feature availability for a longer period before releasing to production.
+        Stable:k8's rollsout changes and new versions on this channel after validating it in the rapid and regular channel
     - **Version:** LATEST AVAIALABLE ON THAT DAY
-  - REST ALL LEAVE TO DEFAULTS
-- **NODE POOLS: default-pool**
+  - LEAVE THE REST AD DEFAULTS
+- **Fleet Generation:** A fleet lets you logically group k8s clusters helping you to reduce overhead per cluster management to group of cluster management.
+- **NODE POOLS: default-pool** (A node pool is a template used in creating groups of nodes with the same configuration similar to MIGs)
 - **Node pool details**
   - **Name:** default-pool
   - **Number of Nodes (per zone):** 1
-  - **Node Pool Upgrade Strategy:** Surge Upgrade
+  - **Node Pool Upgrade Strategy:** Surge Upgrade (Upgrades nodes 1 at a time in place)
 - **Nodes: Configure node settings** 
   - **Image type:** Containerized Optimized OS
   - **Machine configuration**
@@ -35,7 +40,7 @@ description: Learn to create Google Kubernetes Engine GKE Cluster
   - **Boot disk size(GB):** 20
   - **Boot disk encryption:** Google-managed encryption key (default )
   - **Enable Node on Spot VMs:** CHECKED
-- **Node Networking:** LEAVE TO DEFAULTS  
+- **Node Networking:** LEAVE TO DEFAULTS. The default access is set to public but you can **enable authorized networks** to allow you list addresses from where traffic is accepted.
 - **Node Security:** 
   - **Access scopes:** Allow default access (LEAVE TO DEFAULT)
   - REST ALL REVIEW AND LEAVE TO DEFAULTS
@@ -124,7 +129,7 @@ gcloud components install kubectl
 
 # Configure kubectl
 gcloud container clusters get-credentials <CLUSTER-NAME> --zone <ZONE> --project <PROJECT-ID>
-gcloud container clusters get-credentials standard-cluster-1 --zone us-central1-c --project kdaida123
+gcloud container clusters get-credentials standard-cluster-1 --zone us-central1-c --project <project_name>
 
 # Verify Kubernetes Worker Nodes
 kubectl get nodes
